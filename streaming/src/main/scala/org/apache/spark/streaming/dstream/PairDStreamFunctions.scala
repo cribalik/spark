@@ -386,6 +386,15 @@ class PairDStreamFunctions[K, V](self: DStream[(K, V)])
     )
   }
 
+  def timedState[StateType: ClassTag, MappedType: ClassTag](
+    spec: TimedStateSpec[K, V, StateType, MappedType]
+  ): TimedStateDStream[K, V, StateType, MappedType] = {
+    new TimedStateDStreamImpl[K, V, StateType, MappedType](
+      self,
+      spec.asInstanceOf[TimedStateSpecImpl[K, V, StateType, MappedType]]
+    )
+  }
+
   /**
    * Return a new "state" DStream where the state for each key is updated by applying
    * the given function on the previous state of the key and the new values of each key.
